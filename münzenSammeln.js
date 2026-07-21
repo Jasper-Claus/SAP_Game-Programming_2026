@@ -1,8 +1,10 @@
 let jonas = {
     left: 100,
+    top: 100,
 };
 function setJonasPosition() {
-    $("jonas").css("left",jonas.left);
+    $("#jonas").css("left",jonas.left)
+    $("#jonas").css("top",jonas.top)
 }
 
 let punkte = 0;
