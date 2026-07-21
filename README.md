@@ -1,4 +1,4 @@
-Aussehen der Figur (CSS, Bilder/Farben)
+Team 1 - Aussehen der Figur
 •	Prinz glücklich/traurig
 •	Münze
 •	Kobold (Gegner)
