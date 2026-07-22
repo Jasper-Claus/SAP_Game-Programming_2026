@@ -1,0 +1,16 @@
+#spieler{
+    width: 100px;
+    height: 100px;
+    background-color: rgb(195, 31, 149);
+    position: absolute;
+    top: 100px;
+    left: 100px;
+}
+#jasper{
+    width: 100px;
+    height: 100px;
+    background-color: rgb(86, 195, 31);
+    position: absolute;
+    top: 400px;
+    left: 300px; 
+}
