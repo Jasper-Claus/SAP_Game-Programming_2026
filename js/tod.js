@@ -1,34 +1,19 @@
 let spieler = {
     left: 100,
-    top: 100
+    top: 100,
 };
 
-let jasper = {
-    left: 400,
-    top: 300
-};
-
-function setSpielerPosition() {
-    $("#spieler").css({
-        left: spieler.left + "px",
-        top: spieler.top + "px"
-    });
+function setspielerPosition() {
+    $("#spieler").css("left", spieler.left);
+    $("#spieler").css("top", spieler.top);
 }
 
-function setJasperPosition() {
-    $("#jasper").css({
-        left: jasper.left + "px",
-        top: jasper.top + "px"
-    });
-}
+let punkte = 0;
 
 function checkKollision() {
-
-    let ziel = $("#jasper");
-
-    let objLeft = jasper.left;
-    let objTop = jasper.top;
-
+    let ziel = $("#ziel");
+    let objLeft = parseInt(ziel.css("left"));
+    let objTop = parseInt(ziel.css("top"));
     let objGroesse = ziel.width();
     let spielerGroesse = $("#spieler").width();
 
@@ -39,66 +24,68 @@ function checkKollision() {
         spieler.top + spielerGroesse > objTop;
 
     if (kollision) {
-
         let ueberlappOben = spieler.top + spielerGroesse - objTop;
         let ueberlappUnten = objTop + objGroesse - spieler.top;
         let ueberlappLinks = spieler.left + spielerGroesse - objLeft;
         let ueberlappRechts = objLeft + objGroesse - spieler.left;
-
         let minUeberlapp = Math.min(
             ueberlappOben,
             ueberlappUnten,
             ueberlappLinks,
-            ueberlappRechts
+            ueberlappRechts,
         );
-
         if (minUeberlapp === ueberlappOben) {
             ziel.remove();
         } else {
-            window.location.href = "gameover.html";
+            $("#gameOver").show();
         }
 
     }
 }
 
-$(document).ready(function () {
-    setSpielerPosition();
-    setJasperPosition();
-});
+function checkMuenze() {
+    let muenze = $("#muenze");
+    let objLeft = parseInt(muenze.css("left"));
+    let objTop = parseInt(muenze.css("top"));
+    let objGroesse = muenze.width();
+    let spielerGroesse = $("#spieler").width();
+
+    let kollision =
+        spieler.left < objLeft + objGroesse &&
+        spieler.left + spielerGroesse > objLeft &&
+        spieler.top < objTop + objGroesse &&
+        spieler.top + spielerGroesse > objTop;
+
+    if (kollision) {
+        punkte = punkte + 1;
+        $("#punkteAnzeige").text("Punkte: " + punkte);
+        muenze.remove();
+    }
+}
 
 $(document).on("keydown", function (e) {
-
     if (e.code === "KeyA") {
-        spieler.left -= 10;
-    }
-
-    if (e.code === "KeyD") {
-        spieler.left += 10;
-    }
-
-    if (e.code === "KeyW") {
-        spieler.top -= 10;
-    }
-
-    if (e.code === "KeyS") {
-        spieler.top += 10;
-    }
-
-    if (e.code === "Space") {
-
-        spieler.top -= 100;
-        setSpielerPosition();
+        spieler.left = spieler.left - 10;
+        setspielerPosition();
         checkKollision();
-
-        setTimeout(function () {
-            spieler.top += 100;
-            setSpielerPosition();
-            checkKollision();
-        }, 200);
-
-        return;
+        checkMuenze();
     }
-
-    setSpielerPosition();
-    checkKollision();
+    if (e.code === "KeyD") {
+        spieler.left = spieler.left + 10;
+        setspielerPosition();
+        checkKollision();
+        checkMuenze();
+    }
+    if (e.code === "KeyW") {
+        spieler.top = spieler.top - 10;
+        setspielerPosition();
+        checkKollision();
+        checkMuenze();
+    }
+    if (e.code === "KeyS") {
+        spieler.top = spieler.top + 10;
+        setspielerPosition();
+        checkKollision();
+        checkMuenze();
+    }
 });
