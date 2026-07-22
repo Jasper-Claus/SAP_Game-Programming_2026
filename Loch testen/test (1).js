@@ -143,4 +143,5 @@ for (let y = 0; y < mapData.length; y++) {
 
         map.appendChild(tile);
     }
+    
 }
