@@ -21,6 +21,18 @@ body {
 
 }
 
+
+
+#map3 {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-wrap: wrap;
+    z-index:1000;
+   
+
+}
+
 .tile {
     width: calc(100vw / 24);
     height: calc(100vh / 12);

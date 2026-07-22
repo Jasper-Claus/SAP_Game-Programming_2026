@@ -37,10 +37,10 @@ const mapData = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,1,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,1,2,2,0,0,0,3,0,0,0,0,0,0,1,0,3,0,0,0,0,0],
-    [1,1,1,2,2,2,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,1,1,1],
-    [2,2,2,2,2,2,2,2,2,2,2,0,0,0,2,2,2,2,2,2,0,2,2,2],
+    [0,0,0,0,1,1,0,0,0,0,3,0,4,4,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,1,2,2,5,0,0,3,3,0,0,0,0,0,3,0,5,0,0,0,0,0],
+    [1,1,1,2,2,2,1,1,1,2,2,0,0,0,0,1,2,1,1,1,0,1,1,1],
+    [2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,2,2,2,2,2,0,2,2,2],
     [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
 ];
 
@@ -65,13 +65,19 @@ for (let y = 0; y < mapData.length; y++) {
             tile.style.backgroundPosition = "center";
         }
         else if (mapData[y][x] === 3){
-            tile.style.backgroundImage = "url('map1-top.png')";
+            tile.style.backgroundImage = "url('map1-stone.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (mapData[y][x] === 4){
-            tile.style.backgroundImage = "url('map1-top.png')";
+            tile.style.backgroundImage = "url('map-box.png')";
+            tile.style.backgroundSize = "cover";
+            tile.style.backgroundRepeat = "no-repeat";
+            tile.style.backgroundPosition = "center";
+        }
+        else if (mapData[y][x] === 5){
+            tile.style.backgroundImage = "url('map1-spike.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
