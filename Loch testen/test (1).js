@@ -45,9 +45,11 @@ function setspielerPosition() {
     $("#spieler").css("top", spieler.top);
 }
 
+
 $(function () {
     setspielerPosition();
 });
+
 
 function springen() {
     if (spieler.isJumping) {

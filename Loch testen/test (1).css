@@ -6,6 +6,7 @@
     z-index:1002;
 }
 
+
 body {
     margin: 0;
     padding: 0;
@@ -19,6 +20,7 @@ body {
     flex-wrap: wrap;
     z-index:1000;
 }
+
 
 .tile {
     width: calc(100vw / 24);
