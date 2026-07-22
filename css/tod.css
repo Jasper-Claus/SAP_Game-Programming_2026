@@ -14,3 +14,11 @@
     top: 400px;
     left: 300px; 
 }
+#muenze {
+    position: absolute;
+    top: 600px;
+    left: 900px;
+    background-color: gold;
+    width: 100px;
+    height: 100px;
+}

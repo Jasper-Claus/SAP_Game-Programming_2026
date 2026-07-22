@@ -54,12 +54,10 @@ function checkKollision() {
 
         if (minUeberlapp === ueberlappOben) {
             ziel.remove();
-            alert("Gegner besiegt! Von oben getroffen.");
         } else {
             window.location.href = "gameover.html";
         }
 
-        $(document).off("keydown");
     }
 }
 
