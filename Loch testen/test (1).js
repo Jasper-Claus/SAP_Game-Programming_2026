@@ -34,7 +34,7 @@ function checkKollision() {
         );
 
         if (kollision) {
-            window.location.href = "../klotz.html";
+            window.location.href = "############# muss noch geändert werden #############.html";
         }
     }
 }
