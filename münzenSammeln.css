@@ -1,12 +1,15 @@
-#jonas {
+#spieler {
     position: absolute;
     top: 100px;
-    left: 100px;
-    background-color: black;
-    width: 100px;
-    height: 100px;
+    left: 300px;
+    width: 278px;
+    height: 510px;
 }
-
+#spieler img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 #münze {
     position: absolute;
     top: 200px;

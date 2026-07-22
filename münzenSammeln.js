@@ -1,5 +1,5 @@
-let jonas = {
-    left: 100,
+let spieler = {
+    left: 300,
     top: 100,
     ground: 100,
     velocityY: 0,
@@ -11,44 +11,52 @@ let münze = {
     eingesammelt: false,
 };
 let punkte = 0;
+let muenzeGroesse = 50;
 
-function setJonasPosition() {
-    $("#jonas").css("left",jonas.left);
-    $("#jonas").css("top",jonas.top);
+let offsetX = 60;
+let offsetY = 120;
+let hitboxBreite = 150;
+let hitboxHoehe = 270;
+
+
+function setspielerPosition() {
+    $("#spieler").css("left",spieler.left);
+    $("#spieler").css("top",spieler.top);
 }
 
 function checkKollision() {
     if (münze.eingesammelt) {
         return;
     }
-    
-    if (
-
-        jonas.left < münze.left + 50 &&
-        jonas.left + 100 > münze.left &&
-        jonas.top < münze.top + 50 &&
-        jonas.top + 100 > münze.top
-    ) {
+if (
+    spieler.left + offsetX < münze.left + muenzeGroesse &&
+    spieler.left + offsetX + hitboxBreite > münze.left -30 &&
+    spieler.top + offsetY < münze.top + muenzeGroesse &&
+    spieler.top + offsetY + hitboxHoehe > münze.top
+) {
+    // Münze einsammeln {
         punkte++;
         $("#münzenanzahl").text("Münzen: " + punkte);
 
         münze.eingesammelt = true;
         $("#münze").hide();
     }
+
 }
 
-    function updateJump() {
-    if (jonas.isJumping) {
-        jonas.velocityY += 1;
-        jonas.top += jonas.velocityY;
 
-        if (jonas.top >= jonas.ground) {
-            jonas.top = jonas.ground;
-            jonas.velocityY = 0;
-            jonas.isJumping = false;
+    function updateJump() {
+    if (spieler.isJumping) {
+        spieler.velocityY += 1;
+        spieler.top += spieler.velocityY;
+
+        if (spieler.top >= spieler.ground) {
+            spieler.top = spieler.ground;
+            spieler.velocityY = 0;
+            spieler.isJumping = false;
         }
 
-        setJonasPosition();
+        setspielerPosition();
         checkKollision();
     }
     }
@@ -57,30 +65,30 @@ function checkKollision() {
 
 $(document).on("keydown", function (e) {
     if (e.code === "KeyA") {
-        jonas.left = jonas.left - 10;
-        setJonasPosition();
+        spieler.left = spieler.left - 10;
+        setspielerPosition();
         checkKollision();
     }
     if (e.code === "KeyD") {
-        jonas.left = jonas.left + 10;
-        setJonasPosition();
+        spieler.left = spieler.left + 10;
+        setspielerPosition();
         checkKollision();
     }
     if (e.code === "KeyW") {
-        jonas.top = jonas.top - 10;
-        setJonasPosition();
+        spieler.top = spieler.top - 10;
+        setspielerPosition();
         checkKollision();
     }
     if (e.code === "KeyS") {
-        jonas.top = jonas.top + 10;
-        setJonasPosition();
+        spieler.top = spieler.top + 10;
+        setspielerPosition();
         checkKollision();
     }
 
-    if (e.code === "Space" && !jonas.isJumping) {
-    jonas.ground = jonas.top;
-    jonas.velocityY = -15;
-    jonas.isJumping = true;
+    if (e.code === "Space" && !spieler.isJumping) {
+    spieler.ground = spieler.top;
+    spieler.velocityY = -15;
+    spieler.isJumping = true;
 }
 });
     setInterval(updateJump, 20);
