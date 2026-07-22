@@ -1,5 +1,5 @@
     body {
-        background-color: rgb(108, 175, 213);
+        background-color: rgb(143, 201, 235);
     }
 
     header {
@@ -21,7 +21,7 @@
     #klotz{
         width: 100px;
         height: 100px;
-        background-color: green;
+        background-color: rgb(119, 149, 220);
         position: absolute;
         top: 100px;
         left: 100px;
