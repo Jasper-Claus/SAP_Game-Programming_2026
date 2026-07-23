@@ -26,3 +26,6 @@ Team 4 – Spiellogik / Bedingungen
 •	Kollisionen mit Wand/Kobolden/Items
 •	Punktesystem über Wins/Tot/Münzen
 •	Gewinn/Verlierbedingungen
+
+
+https://github.com/Jasper-Claus/SAP_Game-Programming_2026/tree/Spielfigur-und-Design
