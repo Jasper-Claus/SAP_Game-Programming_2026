@@ -1,10 +1,4 @@
-let spieler = {
-    left: 100,
-    top: 100,
-    ground: 100,
-    velocityY: 0,
-    isJumping: false,
-};
+    let spieler = { left: 100, top: 100, ground: 100, velocityY: 0, isJumping: false, };
 
 function checkKollision() {
     let ziel = $("#ziel");
@@ -39,17 +33,14 @@ function checkKollision() {
     }
 }
 
-
 function setspielerPosition() {
     $("#spieler").css("left", spieler.left);
     $("#spieler").css("top", spieler.top);
 }
 
-
 $(function () {
     setspielerPosition();
 });
-
 
 function springen() {
     if (spieler.isJumping) {
@@ -88,8 +79,6 @@ $(document).on("keydown", function (e) {
     setspielerPosition();
     checkKollision();
 });
-
-// ----- Map aufbauen -----
 const mapData = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -98,10 +87,10 @@ const mapData = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,1,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,1,2,2,0,0,0,3,0,0,0,0,0,0,1,0,3,0,0,0,0,0],
-    [1,1,1,2,2,2,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,1,1,1],
-    [2,2,2,2,2,2,2,2,2,2,2,0,0,0,2,2,2,2,2,2,0,2,2,2],
+    [0,0,0,0,1,1,0,0,0,0,3,0,4,4,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,1,2,2,5,0,0,3,3,0,0,0,0,0,3,0,5,0,0,0,0,0],
+    [1,1,1,2,2,2,1,1,1,2,2,0,0,0,0,1,2,1,1,1,0,1,1,1],
+    [2,2,2,2,2,2,2,2,2,2,2,5,5,5,5,2,2,2,2,2,5,2,2,2],
     [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
 ];
 
@@ -118,21 +107,27 @@ for (let y = 0; y < mapData.length; y++) {
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
-        }
-        else if (mapData[y][x] === 1) {
+        } 
+        else if (mapData[y][x] === 1){
             tile.style.backgroundImage = "url('map1-top.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
-        else if (mapData[y][x] === 3) {
-            tile.style.backgroundImage = "url('map1-top.png')";
+        else if (mapData[y][x] === 3){
+            tile.style.backgroundImage = "url('map1-stone.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
-        else if (mapData[y][x] === 4) {
-            tile.style.backgroundImage = "url('map1-top.png')";
+        else if (mapData[y][x] === 4){
+            tile.style.backgroundImage = "url('map-box.png')";
+            tile.style.backgroundSize = "cover";
+            tile.style.backgroundRepeat = "no-repeat";
+            tile.style.backgroundPosition = "center";
+        }
+        else if (mapData[y][x] === 5){
+            tile.style.backgroundImage = "url('map1-spike.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
@@ -143,5 +138,5 @@ for (let y = 0; y < mapData.length; y++) {
 
         map.appendChild(tile);
     }
-    
+
 }
