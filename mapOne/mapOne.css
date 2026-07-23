@@ -1,0 +1,41 @@
+#klotz {
+    width:100px;
+    height:100px;
+    background-color:rgb(132, 189, 102);
+    position:absolute;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+}
+
+#map {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-wrap: wrap;
+    z-index:1000;
+   
+
+}
+
+
+
+#map3 {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-wrap: wrap;
+    z-index:1000;
+   
+
+}
+
+.tile {
+    width: calc(100vw / 24);
+    height: calc(100vh / 12);
+    display: block;
+    z-index:500;
+}
