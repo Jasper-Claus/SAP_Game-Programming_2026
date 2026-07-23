@@ -31,12 +31,52 @@ body{
     bottom:0;
 }
 
-#ground{
+.collider{
     position:absolute;
-    width: 250px;
-    height: 10px;
     background-color: limegreen;
+}
 
-    left: 50px;
-    bottom: 100px;
+
+/* Boden */
+#ground1{
+    width:100vw;
+    height:20px;
+    left:0;
+    bottom:0;
+}
+
+
+/* kleine Plattform links */
+#platform1{
+    width:200px;
+    height:15px;
+    left:100px;
+    bottom:120px;
+}
+
+
+/* Plattform in der Mitte */
+#platform2{
+    width:250px;
+    height:15px;
+    left:450px;
+    bottom:220px;
+}
+
+
+/* Plattform rechts */
+#platform3{
+    width:180px;
+    height:15px;
+    left:800px;
+    bottom:350px;
+}
+
+
+/* höchste Plattform */
+#platform4{
+    width:300px;
+    height:15px;
+    left:1200px;
+    bottom:500px;
 }

@@ -49,7 +49,7 @@ const keys = {};
 //let punkte = 0;
 
 let x = 100;
-let y = 20; // Start auf dem Boden (#ground1 ist 20px hoch)
+let y = 0;
 
 let speedY = 0;
 let speedX = 0;
@@ -59,34 +59,6 @@ const gravity = 0.7;
 const jumpPower = 15;
 
 let springt = false;
-
-const playerWidth = 50;
-const playerHeight = 80;
-
-// Spieler-Hitbox aus x/y berechnen (zuverlässiger als getBoundingClientRect)
-function getPlayerRect() {
-    return {
-        left: x,
-        right: x + playerWidth,
-        top: window.innerHeight - y - playerHeight,
-        bottom: window.innerHeight - y,
-    };
-}
-
-function overlaps(a, b) {
-    return (
-        a.left < b.right &&
-        a.right > b.left &&
-        a.top < b.bottom &&
-        a.bottom > b.top
-    );
-}
-
-// Steht der Spieler nur leicht auf der Oberseite? Dann keine Seiten-Kollision.
-function isOnTopOf(playerRect, blockRect) {
-    const sink = playerRect.bottom - blockRect.top;
-    return sink >= 0 && sink <= 10 && playerRect.top < blockRect.top;
-}
 
 // Beim Drücken zur Liste hinzufügen um gedrückt zu halten zu erlauben
 document.addEventListener("keydown", (e) => {
@@ -119,7 +91,8 @@ document.addEventListener("keydown", function(event){
 */
 // Spielschleife
 function update(){
-
+    
+    
     //Kontrolle welche gedrückt werden und darauf basierend dann bewegung oder aktionen ausführen
     //Links
     if (keys["KeyA"]) {
@@ -134,6 +107,22 @@ function update(){
         speedY = jumpPower;
         springt = true;
     }
+
+    if(springt){
+
+        speedY -= gravity;
+
+        y += speedY;
+
+        if(y <= 0){
+            y = 0;
+            speedY = 0;
+            springt = false;
+        }
+
+    }
+
+    x += speedX;
 
     // Reibung
     if (speedX > 0) {
@@ -160,74 +149,83 @@ function update(){
         speedX = -10;
     }
 
-    // --- X-Achse: erst bewegen, dann Kollision auflösen ---
-    x += speedX;
-
     // Verhindern des verlassen des browser fensters
-    if ((x + playerWidth) > window.innerWidth) {
-        x = window.innerWidth - playerWidth;
+    //Rechts
+    if ((x + 50) > window.innerWidth) {
+        x = window.innerWidth - 50;
     }
+    //Links
     if (x < 0) {
-        x = 0;
+        x = 0;  
     }
 
-    // Seiten-Kollisionen (Boden-Kontakt zählt nicht als Wand)
-    for (const block of collider) {
-        const blockRect = block.getBoundingClientRect();
-        const playerRect = getPlayerRect();
-
-        if (!overlaps(playerRect, blockRect)) continue;
-        if (isOnTopOf(playerRect, blockRect)) continue;
-
-        if (speedX > 0) {
-            x = blockRect.left - playerWidth;
-        } else if (speedX < 0) {
-            x = blockRect.right;
-        }
-
-        speedX = 0;
-    }
-
-    // --- Y-Achse: Schwerkraft, dann Boden/Decke auflösen ---
-    speedY -= gravity;
-    y += speedY;
-
-    if (y < 0) {
-        y = 0;
-        speedY = 0;
-        springt = false;
-    }
-
-    let onGround = false;
-
-    for (const block of collider) {
-        const blockRect = block.getBoundingClientRect();
-        const playerRect = getPlayerRect();
-
-        if (!overlaps(playerRect, blockRect)) continue;
-
-        if (speedY <= 0) {
-            // Landen
-            y = window.innerHeight - blockRect.top;
-            speedY = 0;
-            springt = false;
-            onGround = true;
-        } else {
-            // Kopf stoßen
-            y = window.innerHeight - blockRect.bottom - playerHeight;
-            speedY = 0;
-        }
-    }
-
-    // Von einer Kante gelaufen -> fällt
-    if (!onGround && y > 0) {
-        springt = true;
-    }
 
     spieler.style.left = x + "px";
     spieler.style.bottom = y + "px";
 
+    // Checken wir nach kollisionen und drucken dass aus zum debuggen
+
+    const hit = checkCollision();
+
+    // Debug wird nicht logisch gebraucht, nur fürs menschliche auge
+    if (hit) {
+        console.log("Kollision mit:", hit);
+    }
+
+
+    const playerHeight = 80;
+    const playerWidth = 50;
+
+    if (hit && speedY <= 0) {
+        const blockRect = hit.getBoundingClientRect();
+
+        y = window.innerHeight - blockRect.top;
+
+        speedY = 0;
+        springt = false;
+    } else if (hit && speedY > 0) {
+        const blockRect = hit.getBoundingClientRect();
+        speedY = 0;
+
+        y = window.innerHeight - blockRect.bottom - playerHeight;
+    } else if (hit && speedX < 0) {
+        const blockRect = hit.getBoundingClientRect();
+
+        x = blockRect.left - playerWidth;
+    }
+
+    if (!hit && y > 0 && !springt) {
+        springt = true; // Aktiviert die Schwerkraft wieder fürs Herunterfallen
+    }
+
     requestAnimationFrame(update);
+
+}
+
+function checkCollision() {
+    // Holt die Position und größe vom Spieler
+    const spielerRect = spieler.getBoundingClientRect();
+    
+    // Liest alle Collider Klassen aus und gibt sie anstelle von einer Liste in einzelnden Objekten wieder
+    for (const block of collider) {
+        // Holt die Postition von einem Collider aus der Liste
+        const blockRect = block.getBoundingClientRect();
+
+        // Checkt ob die sich berühren und wenn dass passiert dann gibt es den collider als objekt zurück,
+        // um in später zu nutzen
+        if (
+            spielerRect.left < blockRect.right &&
+            spielerRect.right > blockRect.left &&
+            spielerRect.top < blockRect.bottom &&
+            spielerRect.bottom > blockRect.top
+        ) {
+            return block; // Gibt den Collider zurück
+        }
+    }
+
+    // Wenn keine Berührung stattfindet, gibt die Funktion auch nichts zurück
+
+    return null; // Keine Kollision
 }
 
 update();
