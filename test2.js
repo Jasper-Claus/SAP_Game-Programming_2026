@@ -6,7 +6,7 @@ const map2Data = [
     [0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,4,0,0,1,1,0,0,0],
-    [0,0,0,0,0,0,0,3,3,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,3,3,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0],
     [0,0,0,5,4,0,3,3,3,0,0,3,3,0,0,0,0,0,0,0,1,1,1,1],
     [1,1,1,1,1,5,3,3,3,0,0,3,3,3,0,0,0,0,0,0,2,2,2,2],
     [2,2,2,2,2,2,3,3,3,5,5,3,3,3,3,5,4,5,0,0,2,2,2,2],
@@ -51,6 +51,27 @@ for (let y = 0; y < map2Data.length; y++) {
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
+        else if (map2Data[y][x] === 6){
+           tile.style.backgroundColor = "transparent";           
+            const move = document.createElement('div');
+            move.style.className = 'tile';
+
+            move.id = "move";
+            move.style.position = "absolute";
+            move.style.width = `calc(100vw / 24)`;
+            move.style.height = `calc(100vh / 12)`;
+            move.style.left = `${(x * 100) / 24}vw`;
+            move.style.top = `${(y * 100) / 12}vh`;
+
+
+            move.style.backgroundImage = "url('map-box.png')";
+            move.style.backgroundSize = "cover";
+            move.style.backgroundRepeat = "no-repeat";
+            move.style.backgroundPosition = "center";
+            move.style.zIndex = "100";
+
+            map2.appendChild(move);
+        }
         else {
             tile.style.backgroundColor = "transparent";
         }
@@ -58,3 +79,30 @@ for (let y = 0; y < map2Data.length; y++) {
         map2.appendChild(tile);
     }
 }
+
+let richtung = 1;
+
+function update() {
+
+    const blocks = document.getElementById("move");
+    if (!blocks) return;
+
+    let currentTop = parseInt(window.getComputedStyle(blocks).top) || 0;
+
+    currentTop += richtung;
+
+    if (currentTop >= 400) {
+        richtung = -1;
+    }
+
+    if (currentTop <= 200) {
+        richtung = 1;
+    }
+
+    blocks.style.top = currentTop + "px";
+
+    requestAnimationFrame(update);
+    
+}
+
+update();

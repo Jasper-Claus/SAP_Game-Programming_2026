@@ -78,7 +78,7 @@ for (let y = 0; y < map3Data.length; y++) {
             tile.style.backgroundColor = "transparent";
 
             const moving2 = document.createElement("div");
-            moving2.id = "moving";
+            moving2.id = "moving2";
             moving2.className = "tile";
 
             moving2.style.position = "absolute";
@@ -106,23 +106,48 @@ let richtung = 1; // 1 = rechts, -1 = links
 
 function update() {
 
-    const blocks = document.getElementById("moving2");
+    const blocks = document.getElementById("moving");
 
-    let x = parseInt(blocks.style.top);
+    let x = parseInt(blocks.style.left);
 
     x += richtung;
 
-    if (x >= 480) {      // rechte Grenze
+    if (x >= 480) {      
         richtung = -1;
     }
 
-    if (x <= 150) {      // linke Grenze
+    if (x <= 315) {     
         richtung = 1;
     }
 
-    blocks.style.top = x + "px";
+    blocks.style.left = x + "px";
 
     requestAnimationFrame(update);
 }
 
 update();
+
+let richtung2 = 1; // 1 = rechts, -1 = links
+
+function update2() {
+
+    const blocks = document.getElementById("moving2");
+
+    let y = parseInt(blocks.style.top);
+
+    y += richtung2;
+
+    if (y >= 400) {      
+        richtung2 = -1;
+    }
+
+    if (y <= 195) {   
+          richtung2 = 1;
+    }
+
+    blocks.style.top = y + "px";
+
+    requestAnimationFrame(update2);
+}
+
+update2();
