@@ -91,11 +91,11 @@ function update() {
 
     currentTop += richtung;
 
-    if (currentTop >= 400) {
+    if (currentTop >= 425) {
         richtung = -1;
     }
 
-    if (currentTop <= 200) {
+    if (currentTop <= 300) {
         richtung = 1;
     }
 
