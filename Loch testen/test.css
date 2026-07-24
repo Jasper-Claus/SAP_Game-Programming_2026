@@ -1,0 +1,40 @@
+#spieler {
+    width:100px;
+    height:100px;
+    background-color:rgb(132, 189, 102);
+    position:absolute;
+    z-index:1002;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("himmel_bild.png");
+    z-index: 0;
+}
+
+#map {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-wrap: wrap;
+    z-index:1000;
+}
+
+.tile {
+    width: calc(100vw / 24);
+    height: calc(100vh / 12);
+    display: block;
+    z-index:500;
+}
+
+#ziel{
+    position: absolute;
+    left: 1350px;
+    top: 360px;
+    z-index: 1001;
+}
+
+#ziel img{
+    height: 190px;
+}
