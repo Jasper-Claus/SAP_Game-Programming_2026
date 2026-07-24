@@ -9,6 +9,8 @@
 body {
     margin: 0;
     padding: 0;
+    background-image: url("himmel_bild.png");
+    z-index: 0;
 }
 
 #map {
@@ -34,6 +36,5 @@ body {
 }
 
 #ziel img{
-    width: 200px;
-    height: auto;
+    height: 190px;
 }

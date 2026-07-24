@@ -127,7 +127,7 @@ for (let y = 0; y < mapData.length; y++) {
             tile.style.backgroundPosition = "center";
         }
         else if (mapData[y][x] === 5){
-            tile.style.backgroundImage = "url('map1-spike.png')";
+            tile.style.backgroundImage = "url('map1-spikeee.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
