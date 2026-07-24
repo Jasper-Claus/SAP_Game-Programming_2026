@@ -1,261 +1,275 @@
-// let klotz = {
-//     left: 100,
-//     top: 100,
-
-// } ;
-
-// function setKlotzPosition() {
-//     $("#klotz").css("left", klotz.left);
-//     $("#klotz").css("top", klotz.top);
-
-// }
-
-// $(document).on("keydown", function (e) {
-//     if (e.code == "KeyA") {
-//         klotz.left = klotz.left -10;
-//         setKlotzPosition();
-//     }
-//     if (e.code == "KeyD") {
-//         klotz.left = klotz.left +10;
-//         setKlotzPosition();
-//     }
-//     if (e.code == "KeyW") {
-//         klotz.top = klotz.top -10;
-//         setKlotzPosition();
-//     }
-//     if (e.code == "KeyS") {
-//         klotz.top = klotz.top +10;
-//         setKlotzPosition(); 
-//     }
-// });
-
-
-
-
-
-// const spieler = document.getElementById("klotz");
-// let y = 0;
-// let speedY = 0;
-// const gravity = 0.7;
-const collider = document.querySelectorAll(".collider");
-
-//let muenzen = document.getElementsByClassName("muenze"); // Live
-
 const spieler = document.getElementById("spieler");
+
+spieler.style.backgroundImage = "url('../img/prinzessinLaufen/laufen_1.png')";
 
 const keys = {};
 
-//let anzMuenzen = 0;
-//let punkte = 0;
-
 let x = 100;
-let y = 20; // Start auf dem Boden (ground1 ist 20px hoch)
+let y = 20;
 
 let speedY = 0;
 let speedX = 0;
 
-const friction = 0.9;
-const gravity = 0.7;
-const jumpPower = 15;
+const accel = 1.4;
+const friction = 0.82;
+const gravity = 0.75;
+const jumpPower = 15.5;
+const maxSpeed = 8;
 
 let springt = false;
+let dead = false;
+let portalUsed = false;
 
 const playerWidth = 50;
 const playerHeight = 80;
 
-// Beim Drücken zur Liste hinzufügen um gedrückt zu halten zu erlauben
+const prevBlockRects = new WeakMap();
+let groundedBlock = null;
+
+function getColliders() {
+    return document.querySelectorAll(".collider");
+}
+
+function getPlayerRect() {
+    return {
+        left: x,
+        right: x + playerWidth,
+        top: window.innerHeight - y - playerHeight,
+        bottom: window.innerHeight - y,
+    };
+}
+
+function overlaps(a, b) {
+    return (
+        a.left < b.right &&
+        a.right > b.left &&
+        a.top < b.bottom &&
+        a.bottom > b.top
+    );
+}
+
+// Steht der Spieler auf der Oberseite? (toleranter bei schnellen Fall)
+function isOnTopOf(playerRect, blockRect) {
+    const sink = playerRect.bottom - blockRect.top;
+    return sink >= 0 && sink <= 22 && playerRect.top < blockRect.top;
+}
+
 document.addEventListener("keydown", (e) => {
     keys[e.code] = true;
 });
 
-// Beim loslassen den keycode wieder auf false setzen sodass er sich nicht weiterbewegt
 document.addEventListener("keyup", (e) => {
     keys[e.code] = false;
 });
 
-/*
-// Tastendruck
-document.addEventListener("keydown", function(event){
-    
-    if(event.code === "KeyA"){
-        speedX -= 10;
+let laufBilder = [
+    "../img/prinzessinLaufen/laufen_1.png",
+    "../img/prinzessinLaufen/laufen_2.png",
+    "../img/prinzessinLaufen/laufen_3.png",
+    "../img/prinzessinLaufen/laufen_4.png",
+    "../img/prinzessinLaufen/laufen_5.png",
+    "../img/prinzessinLaufen/laufen_6.png",
+];
+
+let aktuellesBild = 0;
+let animationCounter = 0;
+
+function animierenLaufen() {
+    aktuellesBild = (aktuellesBild + 1) % laufBilder.length;
+    spieler.style.backgroundImage = `url(${laufBilder[aktuellesBild]})`;
+}
+
+function update() {
+    if (dead || portalUsed) return;
+
+    // Mit beweglichen Plattformen mitfahren
+    if (groundedBlock) {
+        const rect = groundedBlock.getBoundingClientRect();
+        const prev = prevBlockRects.get(groundedBlock);
+        if (prev) {
+            x += rect.left - prev.left;
+            y += prev.top - rect.top;
+        }
     }
 
-    if(event.code === "KeyD"){
-        speedX += 10;
+    if (false) {
+        if (speedY > 0) {
+            spieler.style.backgroundImage =
+                "url('../img/prinzessinSpringen/springen_1.png')";
+        } else {
+            spieler.style.backgroundImage =
+                "url('../img/prinzessinSpringen/springen_4.png')";
+        }
+    } else if (Math.abs(speedX) > 0.5) {
+        animationCounter++;
+        if (animationCounter >= 8) {
+            animierenLaufen();
+            animationCounter = 0;
+        }
+    } else {
+        spieler.style.backgroundImage = `url(${laufBilder[0]})`;
     }
 
-    if(event.code === "KeyW" && springt === false){
-        speedY = jumpPower;
-        springt = true;
-    }
-    
-});
-*/
-// Spielschleife
-function update(){
-
-    //Kontrolle welche gedrückt werden und darauf basierend dann bewegung oder aktionen ausführen
-    //Links
     if (keys["KeyA"]) {
-        speedX -= 2;
+        spieler.style.transform = "scaleX(-1)";
+        speedX -= accel;
     }
-    //Rechts
     if (keys["KeyD"]) {
-        speedX += 2;
+        spieler.style.transform = "scaleX(1)";
+        speedX += accel;
     }
-    //Springen
-    if(keys["KeyW"] && springt === false){
+    if (keys["KeyW"] && springt === false) {
         speedY = jumpPower;
         springt = true;
+        groundedBlock = null;
     }
 
-    // Reibung
-    if (speedX > 0) {
-        speedX -= friction;
-
-        if (speedX < 0) {
-            speedX = 0;
-        }
+    // Reibung nur ohne Tasteneingabe
+    if (!keys["KeyA"] && !keys["KeyD"]) {
+        speedX *= friction;
+        if (Math.abs(speedX) < 0.15) speedX = 0;
     }
 
-    if (speedX < 0) {
-        speedX += friction;
+    if (speedX > maxSpeed) speedX = maxSpeed;
+    if (speedX < -maxSpeed) speedX = -maxSpeed;
 
-        if (speedX > 0) {
-            speedX = 0;
-        }
-    }
+    const collider = getColliders();
 
-    if (speedX > 10) {
-        speedX = 10;
-    }
-
-    if (speedX < -10) {
-        speedX = -10;
-    }
-
-    // 1) Zuerst nur LINKS / RECHTS bewegen
-
-    // Aktuelle Position auf den Bildschirm schreiben
-    spieler.style.left = x + "px";
-    spieler.style.bottom = y + "px";
-
-    // War der Spieler SCHON vor dem Seitwärts-Schritt in einem Block?
-    // (z.B. leicht im Boden wegen Schwerkraft)
-    // Wenn ja -> das ist KEINE Wand von der Seite
-    const schonDrin = checkCollision();
-
-    // Jetzt erst seitlich bewegen
+    // --- X-Achse ---
     x += speedX;
 
-    // Verhindern des verlassen des browser fensters
-    //Rechts
-    if ((x + playerWidth) > window.innerWidth) {
+    if (x + playerWidth > window.innerWidth) {
         x = window.innerWidth - playerWidth;
     }
-    //Links
     if (x < 0) {
         x = 0;
     }
 
-    // Neue X-Position anzeigen
-    spieler.style.left = x + "px";
+    for (const block of collider) {
+        const blockRect = block.getBoundingClientRect();
+        const playerRect = getPlayerRect();
 
-    // Checken wir nach kollisionen
-    let hit = checkCollision();
-
-    // Debug wird nicht logisch gebraucht, nur fürs menschliche auge
-    if (hit) {
-        console.log("Kollision mit:", hit);
-    }
-
-    // Seiten-Kollision:
-    // Nur wenn wir VORHER noch nicht im Block waren (!schonDrin)
-    // und uns jetzt durch Laufen reingeschoben haben
-    if (hit && !schonDrin && speedX !== 0) {
-        const blockRect = hit.getBoundingClientRect();
+        if (!overlaps(playerRect, blockRect)) continue;
+        if (isOnTopOf(playerRect, blockRect)) continue;
 
         if (speedX > 0) {
-            // Von links gegen den Block gelaufen -> links vom Block hinstellen
             x = blockRect.left - playerWidth;
-        } else {
-            // Von rechts gegen den Block gelaufen -> rechts vom Block hinstellen
+        } else if (speedX < 0) {
             x = blockRect.right;
+        } else {
+            // Steckt trotzdem in der Wand (z.B. durch Plattform)
+            const overlapLeft = playerRect.right - blockRect.left;
+            const overlapRight = blockRect.right - playerRect.left;
+            if (overlapLeft < overlapRight) {
+                x = blockRect.left - playerWidth;
+            } else {
+                x = blockRect.right;
+            }
         }
 
         speedX = 0;
-        spieler.style.left = x + "px";
     }
 
-    // 2) Danach nur HOCH / RUNTER bewegen
-    // Schwerkraft wirkt immer (ziehen nach unten)
+    // --- Y-Achse ---
     speedY -= gravity;
     y += speedY;
 
-    // Nicht unter den Bildschirm fallen
     if (y < 0) {
         y = 0;
         speedY = 0;
         springt = false;
+        groundedBlock = null;
     }
 
-    // Neue Y-Position anzeigen
-    spieler.style.bottom = y + "px";
+    let onGround = false;
+    groundedBlock = null;
 
-    // Nochmal Kollision prüfen (jetzt für Boden / Decke)
-    hit = checkCollision();
+    for (const block of collider) {
+        const blockRect = block.getBoundingClientRect();
+        const playerRect = getPlayerRect();
 
-    if (hit) {
-        const blockRect = hit.getBoundingClientRect();
+        if (!overlaps(playerRect, blockRect)) continue;
 
         if (speedY <= 0) {
-            // Fallen / stehen -> auf dem Block landen
             y = window.innerHeight - blockRect.top;
             speedY = 0;
             springt = false;
+            onGround = true;
+            groundedBlock = block;
         } else {
-            // Springen nach oben -> mit dem Kopf gegen den Block stoßen
             y = window.innerHeight - blockRect.bottom - playerHeight;
             speedY = 0;
         }
-
-        spieler.style.bottom = y + "px";
     }
 
-    // Von einer Kante gelaufen -> Schwerkraft / Fallen wieder an
-    if (!hit && y > 0 && !springt) {
-        springt = true; // Aktiviert die Schwerkraft wieder fürs Herunterfallen
+    if (!onGround && y > 0) {
+        springt = true;
+        groundedBlock = null;
     }
+
+    // Positionen der Collider fürs Mitfahren merken
+    for (const block of collider) {
+        const r = block.getBoundingClientRect();
+        prevBlockRects.set(block, { left: r.left, top: r.top });
+    }
+
+    spieler.style.left = x + "px";
+    spieler.style.bottom = y + "px";
+
+    checkKollision();
+    checkKollisionKobold();
+    checkPortal();
 
     requestAnimationFrame(update);
-
 }
 
-function checkCollision() {
-    // Holt die Position und größe vom Spieler
-    const spielerRect = spieler.getBoundingClientRect();
+function checkKollision() {
+    if (dead) return;
 
-    // Liest alle Collider Klassen aus und gibt sie anstelle von einer Liste in einzelnden Objekten wieder
-    for (const block of collider) {
-        // Holt die Postition von einem Collider aus der Liste
-        const blockRect = block.getBoundingClientRect();
+    const spikes = document.querySelectorAll(".spike");
+    const playerRect = getPlayerRect();
 
-        // Checkt ob die sich berühren und wenn dass passiert dann gibt es den collider als objekt zurück,
-        // um in später zu nutzen
-        if (
-            spielerRect.left < blockRect.right &&
-            spielerRect.right > blockRect.left &&
-            spielerRect.top < blockRect.bottom &&
-            spielerRect.bottom > blockRect.top
-        ) {
-            return block; // Gibt den Collider zurück
+    for (const spike of spikes) {
+        const spikeRect = spike.getBoundingClientRect();
+        // Etwas kleinere Hitbox → fairer an den Kanten
+        const hit = {
+            left: spikeRect.left + 8,
+            right: spikeRect.right - 8,
+            top: spikeRect.top + 10,
+            bottom: spikeRect.bottom,
+        };
+
+        if (overlaps(playerRect, hit)) {
+            dead = true;
+            spieler.style.backgroundColor = "black";
+            setTimeout(() => location.reload(), 1000);
+            return;
         }
     }
+}
 
-    // Wenn keine Berührung stattfindet, gibt die Funktion auch nichts zurück
+function checkKollisionKobold() {
+    const kobold = document.getElementById("kobold");
+    if (!kobold || dead) return;
 
-    return null; // Keine Kollision
+    if (overlaps(getPlayerRect(), kobold.getBoundingClientRect())) {
+        dead = true;
+        spieler.style.backgroundColor = "black";
+        setTimeout(() => location.reload(), 1000);
+    }
+}
+
+function checkPortal() {
+    const portal = document.getElementById("portal");
+    if (!portal || dead || portalUsed) return;
+
+    if (overlaps(getPlayerRect(), portal.getBoundingClientRect())) {
+        portalUsed = true;
+        const ziel = portal.dataset.ziel;
+        if (ziel) {
+            window.location.href = ziel;
+        }
+    }
 }
 
 update();

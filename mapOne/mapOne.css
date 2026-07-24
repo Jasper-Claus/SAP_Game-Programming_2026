@@ -1,14 +1,19 @@
-#klotz {
-    width:100px;
-    height:100px;
-    background-color:rgb(132, 189, 102);
-    position:absolute;
+#spieler {
+    position: absolute;
+    z-index: 2000;
+    width: 50px;
+    height: 80px;
+    left: 100px;
+    bottom: 0;
+    background-image: url("../img/prinzessinLaufen/laufen_1.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 body {
     margin: 0;
     padding: 0;
-
 }
 
 #map {
@@ -16,30 +21,24 @@ body {
     inset: 0;
     display: flex;
     flex-wrap: wrap;
-    z-index:1000;
-   
-
+    z-index: 1000;
 }
-
-
 
 #map3 {
     position: fixed;
     inset: 0;
     display: flex;
     flex-wrap: wrap;
-    z-index:1000;
-   
-
+    z-index: 1000;
 }
 
 .tile {
     width: calc(100vw / 24);
     height: calc(100vh / 12);
     display: block;
-    z-index:500;
+    z-index: 500;
 }
 
 body {
-    background-image: url('map1-hintergrund.png');
+    background-image: url("./img/mapOne-Background.png");
 }
