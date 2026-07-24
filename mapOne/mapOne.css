@@ -1,10 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url('./img/mapOne-Background.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+
 }
 
 #map {
@@ -13,6 +10,20 @@ body {
     display: flex;
     flex-wrap: wrap;
     z-index:1000;
+   
+
+}
+
+
+
+#map3 {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-wrap: wrap;
+    z-index:1000;
+   
+
 }
 
 .tile {
@@ -20,5 +31,8 @@ body {
     height: calc(100vh / 12);
     display: block;
     z-index:500;
-    box-sizing: border-box;
+}
+
+body {
+    background-image: url('./img/mapOne-Background.png');
 }

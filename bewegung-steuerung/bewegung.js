@@ -43,7 +43,6 @@ const collider = document.querySelectorAll(".collider");
 
 const spieler = document.getElementById("spieler");
 
-// Pfade relativ zur HTML-Datei (Map-Ordner)
 spieler.style.backgroundImage = "url('../img/prinzessinLaufen/laufen_1.png')";
 
 const keys = {};
@@ -151,7 +150,6 @@ function update(){
 
     if (dead) return;
 
-    // Sprunganimation vorbereitet, später aktivieren
     if (false) {
 
     if (speedY > 0) {
@@ -309,7 +307,13 @@ function checkKollision() {
     for (const spike of spikes) {
         const spikeRect = spike.getBoundingClientRect();
 
-        if (overlaps(playerRect, spikeRect)) {
+        const kollidiert =
+            playerRect.left < spikeRect.right &&
+            playerRect.right > spikeRect.left &&
+            playerRect.top < spikeRect.bottom &&
+            playerRect.bottom > spikeRect.top;
+
+        if (kollidiert) {
             dead = true;
             spieler.style.backgroundColor = "black";
             setTimeout(function () {
@@ -327,7 +331,13 @@ function checkKollisionKobold() {
     const playerRect = getPlayerRect();
     const koboldRect = kobold.getBoundingClientRect();
 
-    if (overlaps(playerRect, koboldRect)) {
+    const kollidiert =
+        playerRect.left < koboldRect.right &&
+        playerRect.right > koboldRect.left &&
+        playerRect.top < koboldRect.bottom &&
+        playerRect.bottom > koboldRect.top;
+
+    if (kollidiert) {
         dead = true;
         spieler.style.backgroundColor = "black";
         setTimeout(function () {
@@ -345,7 +355,13 @@ function checkPortal() {
     const playerRect = getPlayerRect();
     const portalRect = portal.getBoundingClientRect();
 
-    if (overlaps(playerRect, portalRect)) {
+    const kollidiert =
+        playerRect.left < portalRect.right &&
+        playerRect.right > portalRect.left &&
+        playerRect.top < portalRect.bottom &&
+        playerRect.bottom > portalRect.top;
+
+    if (kollidiert) {
         location.href = portal.dataset.ziel;
     }
 }

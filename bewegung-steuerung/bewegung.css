@@ -35,9 +35,8 @@ body{
     bottom:0;
 }
 
-/* Kein position:absolute hier – Map-Tiles bleiben im Flex-Grid.
-   Bewegliche Boxen setzen position selbst inline. */
 .collider{
+    /* position:absolute entfernt – Map-Tiles bleiben im Flex-Grid */
 }
 
 

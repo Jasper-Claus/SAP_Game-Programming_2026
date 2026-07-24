@@ -1,18 +1,8 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-image: url('./img/mapThree-Background.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
 #map3 {
     position: fixed;
     inset: 0;
     display: flex;
     flex-wrap: wrap;
-    z-index:1000;
 }
 
 .tile {
@@ -20,5 +10,8 @@ body {
     height: calc(100vh / 12);
     display: block;
     z-index:500;
-    box-sizing: border-box;
+}
+
+body {
+    background-image: url('./img/mapThree-Background.png');
 }

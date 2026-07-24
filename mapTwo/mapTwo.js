@@ -22,42 +22,42 @@ for (let y = 0; y < map2Data.length; y++) {
         tile.className = "tile";
 
         if (map2Data[y][x] === 2) {
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapTwo-earth.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
-        }
+        } 
         else if (map2Data[y][x] === 1){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapTwo-top.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map2Data[y][x] === 3){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapTwo-stone.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map2Data[y][x] === 4){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('../img/maps/map-box.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map2Data[y][x] === 5){
-            tile.classList.add("spike");
+            tile.className = "tile spike";
             tile.style.backgroundImage = "url('./img/mapTwo-spike.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map2Data[y][x] === 6){
-           tile.style.backgroundColor = "transparent";
+           tile.style.backgroundColor = "transparent";           
             const move = document.createElement('div');
             move.className = 'tile collider';
 
@@ -67,6 +67,7 @@ for (let y = 0; y < map2Data.length; y++) {
             move.style.height = `calc(100vh / 12)`;
             move.style.left = `${(x * 100) / 24}vw`;
             move.style.top = `${(y * 100) / 12}vh`;
+
 
             move.style.backgroundImage = "url('../img/maps/map-box.png')";
             move.style.backgroundSize = "cover";
@@ -115,7 +116,7 @@ function updateBox() {
     blocks.style.top = currentTop + "px";
 
     requestAnimationFrame(updateBox);
-
+    
 }
 
 updateBox();

@@ -25,35 +25,35 @@ for (let y = 0; y < map3Data.length; y++) {
         tile.className = "tile";
 
         if (map3Data[y][x] === 2) {
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapThree-earth.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
-        }
+        } 
         else if (map3Data[y][x] === 1){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapThree-top.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 3){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapThree-stone.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 4){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('../img/maps/map-box.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 5){
-            tile.classList.add("spike");
+            tile.className = "tile spike";
             tile.style.backgroundImage = "url('./img/mapThree-spike.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
@@ -68,8 +68,8 @@ for (let y = 0; y < map3Data.length; y++) {
             moving.className = "tile collider";
 
             moving.style.position = "absolute";
-            moving.style.width = `calc(100vw / 24)`;
-            moving.style.height = `calc(100vh / 12)`;
+            moving.style.width = tileWidth + "px";
+            moving.style.height = tileHeight + "px";
             moving.style.left = `${x * tileWidth}px`;
             moving.style.top = `${y * tileHeight}px`;
 
@@ -77,7 +77,6 @@ for (let y = 0; y < map3Data.length; y++) {
             moving.style.backgroundSize = "cover";
             moving.style.backgroundRepeat = "no-repeat";
             moving.style.backgroundPosition = "center";
-            moving.style.zIndex = "100";
 
             document.body.appendChild(moving);
         }
@@ -90,8 +89,8 @@ for (let y = 0; y < map3Data.length; y++) {
             moving2.className = "tile collider";
 
             moving2.style.position = "absolute";
-            moving2.style.width = `calc(100vw / 24)`;
-            moving2.style.height = `calc(100vh / 12)`;
+            moving2.style.width = tileWidth + "px";
+            moving2.style.height = tileHeight + "px";
             moving2.style.left = `${x * tileWidth}px`;
             moving2.style.top = `${y * tileHeight}px`;
 
@@ -99,7 +98,6 @@ for (let y = 0; y < map3Data.length; y++) {
             moving2.style.backgroundSize = "cover";
             moving2.style.backgroundRepeat = "no-repeat";
             moving2.style.backgroundPosition = "center";
-            moving2.style.zIndex = "100";
 
             document.body.appendChild(moving2);
         }
@@ -124,11 +122,11 @@ function updateBox() {
 
     x += richtung;
 
-    if (x >= 480) {
+    if (x >= 480) {      
         richtung = -1;
     }
 
-    if (x <= 315) {
+    if (x <= 315) {     
         richtung = 1;
     }
 
@@ -150,11 +148,11 @@ function updateBox2() {
 
     y += richtung2;
 
-    if (y >= 400) {
+    if (y >= 400) {      
         richtung2 = -1;
     }
 
-    if (y <= 195) {
+    if (y <= 195) {   
           richtung2 = 1;
     }
 

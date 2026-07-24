@@ -22,35 +22,35 @@ for (let y = 0; y < mapData.length; y++) {
         tile.className = "tile";
 
         if (mapData[y][x] === 2) {
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapOne-earth.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
-        }
+        } 
         else if (mapData[y][x] === 1){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapOne-top.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (mapData[y][x] === 3){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('./img/mapOne-stone.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (mapData[y][x] === 4){
-            tile.classList.add("collider");
+            tile.className = "tile collider";
             tile.style.backgroundImage = "url('../img/maps/map-box.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (mapData[y][x] === 5){
-            tile.classList.add("spike");
+            tile.className = "tile spike";
             tile.style.backgroundImage = "url('./img/mapOne-spike.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
