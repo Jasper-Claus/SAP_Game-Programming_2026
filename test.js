@@ -1,32 +1,3 @@
-let klotz=  {
-    left: 100,
-    top: 100,
-};
-
-function setKlotzPosition() {
-    $("#klotz").css("left", klotz.left);
-    $("#klotz").css("top", klotz.top);
-}
-
-$(document).on("keydown", function (e){
-    if (e.code === "KeyA"){
-        klotz.left = klotz.left - 10;
-        setKlotzPosition();
-    }
-    if (e.code === "KeyD"){
-        klotz.left = klotz.left + 10;
-        setKlotzPosition();
-    }
-    if (e.code === "KeyW"){
-        klotz.top = klotz.top - 10;
-        setKlotzPosition();
-    }
-    if (e.code === "KeyS"){
-        klotz.top = klotz.top + 10;
-        setKlotzPosition();
-    }
-});
-
 
 
 const mapData = [
