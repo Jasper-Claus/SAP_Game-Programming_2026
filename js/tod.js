@@ -9,19 +9,27 @@ function setspielerPosition() {
 }
 
 let punkte = 0;
+let abstand = 20;
+
 
 function checkKollision() {
-    let ziel = $("#ziel");
-    let objLeft = parseInt(ziel.css("left"));
-    let objTop = parseInt(ziel.css("top"));
-    let objGroesse = ziel.width();
+    let kobold = $("#kobold");
+    if (kobold.length === 0) {
+        return;
+    }
+    let objLeft = parseInt(kobold.css("left"));
+    let objTop = parseInt(kobold.css("top"));
+    let objGroesse = kobold.width();
     let spielerGroesse = $("#spieler").width();
 
+    let hitbox = 60;
+
     let kollision =
-        spieler.left < objLeft + objGroesse &&
-        spieler.left + spielerGroesse > objLeft &&
-        spieler.top < objTop + objGroesse &&
-        spieler.top + spielerGroesse > objTop;
+    spieler.left < objLeft + objGroesse + hitbox &&
+    spieler.left + spielerGroesse > objLeft - hitbox &&
+    spieler.top < objTop + objGroesse + hitbox &&
+    spieler.top + spielerGroesse > objTop - hitbox;
+
 
     if (kollision) {
         let ueberlappOben = spieler.top + spielerGroesse - objTop;
@@ -34,14 +42,17 @@ function checkKollision() {
             ueberlappLinks,
             ueberlappRechts,
         );
+
         if (minUeberlapp === ueberlappOben) {
-            ziel.remove();
+             punkte = punkte + 2;
+        $("#punkteAnzeige").text("Punkte: " + punkte);
+            kobold.remove();
         } else {
-            $("#gameOver").show();
+            window.location.href = "gameover.html";
+        }
         }
 
     }
-}
 
 function checkMuenze() {
     let muenze = $("#muenze");
@@ -50,11 +61,13 @@ function checkMuenze() {
     let objGroesse = muenze.width();
     let spielerGroesse = $("#spieler").width();
 
+    let hitbox = 60;
+
     let kollision =
-        spieler.left < objLeft + objGroesse &&
-        spieler.left + spielerGroesse > objLeft &&
-        spieler.top < objTop + objGroesse &&
-        spieler.top + spielerGroesse > objTop;
+    spieler.left < objLeft + objGroesse + hitbox &&
+    spieler.left + spielerGroesse > objLeft - hitbox &&
+    spieler.top < objTop + objGroesse + hitbox &&
+    spieler.top + spielerGroesse > objTop - hitbox;
 
     if (kollision) {
         punkte = punkte + 1;
@@ -62,30 +75,54 @@ function checkMuenze() {
         muenze.remove();
     }
 }
+function checkPokal() {
+    let pokal = $("#pokal");
+    let objLeft = parseInt(pokal.css("left"));
+    let objTop = parseInt(pokal.css("top"));
+    let objGroesse = pokal.width();
+    let spielerGroesse = $("#spieler").width();
 
+    let hitbox = 60;
+
+    let kollision =
+    spieler.left < objLeft + objGroesse + hitbox &&
+    spieler.left + spielerGroesse > objLeft - hitbox &&
+    spieler.top < objTop + objGroesse + hitbox &&
+    spieler.top + spielerGroesse > objTop - hitbox;
+
+  
+     if (kollision) {
+        pokal.remove();
+        window.location.href ="win.html";
+     }
+}
 $(document).on("keydown", function (e) {
     if (e.code === "KeyA") {
         spieler.left = spieler.left - 10;
         setspielerPosition();
         checkKollision();
         checkMuenze();
+        checkPokal();
     }
     if (e.code === "KeyD") {
         spieler.left = spieler.left + 10;
         setspielerPosition();
         checkKollision();
         checkMuenze();
+         checkPokal();
     }
     if (e.code === "KeyW") {
         spieler.top = spieler.top - 10;
         setspielerPosition();
         checkKollision();
         checkMuenze();
+         checkPokal();
     }
     if (e.code === "KeyS") {
         spieler.top = spieler.top + 10;
         setspielerPosition();
         checkKollision();
         checkMuenze();
+         checkPokal();
     }
 });
