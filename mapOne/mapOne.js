@@ -44,7 +44,7 @@ for (let y = 0; y < mapData.length; y++) {
         }
         else if (mapData[y][x] === 4){
             tile.className = "tile collider";
-            tile.style.backgroundImage = "url('../img/maps/map-box.png')";
+            tile.style.backgroundImage = "url('./img/map-box.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
@@ -59,10 +59,11 @@ for (let y = 0; y < mapData.length; y++) {
         else if (mapData[y][x] === 9){
             tile.id = "portal";
             tile.dataset.ziel = "../mapTwo/mapTwo.html";
-            tile.style.backgroundImage = "url('../img/maps/portal.png')";
+            tile.style.backgroundImage = "url('./img/portal.png')";
             tile.style.backgroundSize = "contain";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
+            tile.style.backgroundColor = "transparent";
         }
         else {
             tile.style.backgroundColor = "transparent";

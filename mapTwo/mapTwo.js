@@ -44,7 +44,7 @@ for (let y = 0; y < map2Data.length; y++) {
         }
         else if (map2Data[y][x] === 4){
             tile.className = "tile collider";
-            tile.style.backgroundImage = "url('../img/maps/map-box.png')";
+            tile.style.backgroundImage = "url('./img/map-box.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
@@ -69,7 +69,7 @@ for (let y = 0; y < map2Data.length; y++) {
             move.style.top = `${(y * 100) / 12}vh`;
 
 
-            move.style.backgroundImage = "url('../img/maps/map-box.png')";
+            move.style.backgroundImage = "url('./img/map-box.png')";
             move.style.backgroundSize = "cover";
             move.style.backgroundRepeat = "no-repeat";
             move.style.backgroundPosition = "center";
@@ -80,10 +80,11 @@ for (let y = 0; y < map2Data.length; y++) {
         else if (map2Data[y][x] === 9){
             tile.id = "portal";
             tile.dataset.ziel = "../mapThree/mapThree.html";
-            tile.style.backgroundImage = "url('../img/maps/portal.png')";
+            tile.style.backgroundImage = "url('./img/portal.png')";
             tile.style.backgroundSize = "contain";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
+            tile.style.backgroundColor = "transparent";
         }
         else {
             tile.style.backgroundColor = "transparent";

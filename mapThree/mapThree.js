@@ -7,7 +7,7 @@ const map3Data = [
     [0,0,0,0,3,3,0,0,0,0,4,4,0,0,0,0,0,0,3,4,0,0,0,0],
     [0,0,0,3,3,3,0,0,6,0,0,0,0,0,0,0,0,0,3,3,4,0,0,0],
     [0,0,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0],
-    [2,2,2,2,2,2,5,5,0,0,0,0,0,1,0,4,0,0,3,3,3,4,0,0],
+    [2,2,2,2,2,2,5,5,0,0,0,0,0,1,0,4,0,0,3,3,3,4,0,9],
     [2,2,2,2,2,2,1,1,1,1,0,1,1,2,0,0,0,7,2,2,2,1,1,1],
     [2,2,2,2,2,2,2,2,2,2,5,2,2,2,5,5,5,1,2,2,2,2,2,2],
     [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
@@ -47,7 +47,7 @@ for (let y = 0; y < map3Data.length; y++) {
         }
         else if (map3Data[y][x] === 4){
             tile.className = "tile collider";
-            tile.style.backgroundImage = "url('../img/maps/map-box.png')";
+            tile.style.backgroundImage = "url('./img/map-box.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
@@ -73,7 +73,7 @@ for (let y = 0; y < map3Data.length; y++) {
             moving.style.left = `${x * tileWidth}px`;
             moving.style.top = `${y * tileHeight}px`;
 
-            moving.style.backgroundImage = "url('../img/maps/map-box.png')";
+            moving.style.backgroundImage = "url('./img/map-box.png')";
             moving.style.backgroundSize = "cover";
             moving.style.backgroundRepeat = "no-repeat";
             moving.style.backgroundPosition = "center";
@@ -94,12 +94,21 @@ for (let y = 0; y < map3Data.length; y++) {
             moving2.style.left = `${x * tileWidth}px`;
             moving2.style.top = `${y * tileHeight}px`;
 
-            moving2.style.backgroundImage = "url('../img/maps/map-box.png')";
+            moving2.style.backgroundImage = "url('./img/map-box.png')";
             moving2.style.backgroundSize = "cover";
             moving2.style.backgroundRepeat = "no-repeat";
             moving2.style.backgroundPosition = "center";
 
             document.body.appendChild(moving2);
+        }
+        else if (map3Data[y][x] === 9){
+            tile.id = "portal";
+            tile.dataset.ziel = "../mapOne/mapOne.html";
+            tile.style.backgroundImage = "url('./img/pokal.png')";
+            tile.style.backgroundSize = "contain";
+            tile.style.backgroundRepeat = "no-repeat";
+            tile.style.backgroundPosition = "center";
+            tile.style.backgroundColor = "transparent";
         }
         else {
             tile.style.backgroundColor = "transparent";

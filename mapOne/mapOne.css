@@ -1,7 +1,17 @@
-body {
+html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 
+body {
+    background-color: skyblue;
+    background-image: url('./img/mapOne-Background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 #map {
@@ -9,30 +19,20 @@ body {
     inset: 0;
     display: flex;
     flex-wrap: wrap;
-    z-index:1000;
-   
-
-}
-
-
-
-#map3 {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-wrap: wrap;
-    z-index:1000;
-   
-
+    z-index: 1000;
+    background: transparent;
 }
 
 .tile {
     width: calc(100vw / 24);
     height: calc(100vh / 12);
     display: block;
-    z-index:500;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    z-index: 500;
 }
 
-body {
-    background-image: url('./img/mapOne-Background.png');
+#portal {
+    z-index: 800;
+    background-color: transparent !important;
 }
