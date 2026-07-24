@@ -82,12 +82,27 @@ body{
     background: transparent;
     overflow: hidden;
 }
-
+#kobold{
+    width: 30px;
+    height: 60px;
+    left: 900px;
+    bottom: 20px;
+    z-index: 1001;
+    background: transparent;
+    overflow: hidden;
+}
 #spike img{
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
     transform: scale(0.9);
+    transform-origin: center bottom;
+}
+#kobold img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
     transform-origin: center bottom;
 }

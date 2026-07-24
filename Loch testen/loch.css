@@ -1,0 +1,10 @@
+#ziel{
+    position: absolute;
+    left: 1350px;
+    top: 360px;
+    z-index: 1001;
+}
+
+#ziel img{
+    height: 190px;
+}
