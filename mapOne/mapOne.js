@@ -60,10 +60,9 @@ for (let y = 0; y < mapData.length; y++) {
             tile.id = "portal";
             tile.dataset.ziel = "../mapTwo/mapTwo.html";
             tile.style.backgroundImage = "url('../img/maps/portal.png')";
-            tile.style.backgroundSize = "cover";
+            tile.style.backgroundSize = "contain";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
-            tile.style.backgroundColor = "mediumpurple";
         }
         else {
             tile.style.backgroundColor = "transparent";
