@@ -7,7 +7,7 @@ const map3Data = [
     [0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 3, 4, 0, 0, 0, 0],
     [0, 0, 0, 3, 3, 3, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 4, 0, 0, 0],
     [0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 0],
-    [2, 2, 2, 2, 2, 2, 5, 5, 0, 0, 0, 0, 0, 1, 0, 4, 0, 0, 3, 3, 3, 4, 0, 9],
+    [2, 2, 2, 2, 2, 2, 5, 5, 0, 0, 0, 0, 8, 1, 0, 4, 0, 0, 3, 3, 3, 4, 8, 9],
     [2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 0, 1, 1, 2, 0, 0, 0, 7, 2, 2, 2, 1, 1, 1],
     [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 2, 2, 2, 5, 5, 5, 1, 2, 2, 2, 2, 2, 2],
     [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
@@ -108,6 +108,14 @@ for (let y = 0; y < map3Data.length; y++) {
             moving2.style.backgroundPosition = "center";
 
             map3.appendChild(moving2);
+        } else if (map3Data[y][x] === 8) {
+            // Kobold = Spike mit anderem Bild, steht still
+            tile.classList.add("spike");
+            tile.style.backgroundImage =
+                "url('../img/trollLaufen/laufen_1.png')";
+            tile.style.backgroundSize = "contain";
+            tile.style.backgroundRepeat = "no-repeat";
+            tile.style.backgroundPosition = "bottom center";
         } else if (map3Data[y][x] === 9) {
             tile.id = "portal";
             tile.dataset.ziel = "../win/win.html";
