@@ -7,7 +7,7 @@ const map3Data = [
     [0,0,0,0,3,3,0,0,0,0,4,4,0,0,0,0,0,0,3,4,0,0,0,0],
     [0,0,0,3,3,3,0,0,6,0,0,0,0,0,0,0,0,0,3,3,4,0,0,0],
     [0,0,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0],
-    [2,2,2,2,2,2,5,5,0,0,0,0,0,1,0,4,0,0,3,3,3,4,0,0],
+    [2,2,2,2,2,2,5,5,0,0,0,0,0,1,0,4,0,0,3,3,3,4,0,9],
     [2,2,2,2,2,2,1,1,1,1,0,1,1,2,0,0,0,7,2,2,2,1,1,1],
     [2,2,2,2,2,2,2,2,2,2,5,2,2,2,5,5,5,1,2,2,2,2,2,2],
     [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
@@ -25,31 +25,36 @@ for (let y = 0; y < map3Data.length; y++) {
         tile.className = "tile";
 
         if (map3Data[y][x] === 2) {
-            tile.style.backgroundImage = "url('map3-earth.png')";
+            tile.className = "tile collider";
+            tile.style.backgroundImage = "url('./img/mapThree-earth.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         } 
         else if (map3Data[y][x] === 1){
-            tile.style.backgroundImage = "url('map3-top.png')";
+            tile.className = "tile collider";
+            tile.style.backgroundImage = "url('./img/mapThree-top.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 3){
-            tile.style.backgroundImage = "url('map3-stone.png')";
+            tile.className = "tile collider";
+            tile.style.backgroundImage = "url('./img/mapThree-stone.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 4){
-            tile.style.backgroundImage = "url('map-box.png')";
+            tile.className = "tile collider";
+            tile.style.backgroundImage = "url('./img/map-box.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 5){
-            tile.style.backgroundImage = "url('map3-spike.png')";
+            tile.className = "tile spike";
+            tile.style.backgroundImage = "url('./img/mapThree-spike.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
@@ -60,13 +65,15 @@ for (let y = 0; y < map3Data.length; y++) {
 
             const moving = document.createElement("div");
             moving.id = "moving";
-            moving.className = "tile";
+            moving.className = "tile collider";
 
             moving.style.position = "absolute";
+            moving.style.width = tileWidth + "px";
+            moving.style.height = tileHeight + "px";
             moving.style.left = `${x * tileWidth}px`;
             moving.style.top = `${y * tileHeight}px`;
 
-            moving.style.backgroundImage = "url('map-box.png')";
+            moving.style.backgroundImage = "url('./img/map-box.png')";
             moving.style.backgroundSize = "cover";
             moving.style.backgroundRepeat = "no-repeat";
             moving.style.backgroundPosition = "center";
@@ -79,18 +86,29 @@ for (let y = 0; y < map3Data.length; y++) {
 
             const moving2 = document.createElement("div");
             moving2.id = "moving2";
-            moving2.className = "tile";
+            moving2.className = "tile collider";
 
             moving2.style.position = "absolute";
+            moving2.style.width = tileWidth + "px";
+            moving2.style.height = tileHeight + "px";
             moving2.style.left = `${x * tileWidth}px`;
             moving2.style.top = `${y * tileHeight}px`;
 
-            moving2.style.backgroundImage = "url('map-box.png')";
+            moving2.style.backgroundImage = "url('./img/map-box.png')";
             moving2.style.backgroundSize = "cover";
             moving2.style.backgroundRepeat = "no-repeat";
             moving2.style.backgroundPosition = "center";
 
             document.body.appendChild(moving2);
+        }
+        else if (map3Data[y][x] === 9){
+            tile.id = "portal";
+            tile.dataset.ziel = "../mapOne/mapOne.html";
+            tile.style.backgroundImage = "url('./img/pokal.png')";
+            tile.style.backgroundSize = "contain";
+            tile.style.backgroundRepeat = "no-repeat";
+            tile.style.backgroundPosition = "center";
+            tile.style.backgroundColor = "transparent";
         }
         else {
             tile.style.backgroundColor = "transparent";
@@ -104,9 +122,10 @@ for (let y = 0; y < map3Data.length; y++) {
 
 let richtung = 1; // 1 = rechts, -1 = links
 
-function update() {
+function updateBox() {
 
     const blocks = document.getElementById("moving");
+    if (!blocks) return;
 
     let x = parseInt(blocks.style.left);
 
@@ -122,16 +141,17 @@ function update() {
 
     blocks.style.left = x + "px";
 
-    requestAnimationFrame(update);
+    requestAnimationFrame(updateBox);
 }
 
-update();
+updateBox();
 
 let richtung2 = 1; // 1 = rechts, -1 = links
 
-function update2() {
+function updateBox2() {
 
     const blocks = document.getElementById("moving2");
+    if (!blocks) return;
 
     let y = parseInt(blocks.style.top);
 
@@ -147,7 +167,7 @@ function update2() {
 
     blocks.style.top = y + "px";
 
-    requestAnimationFrame(update2);
+    requestAnimationFrame(updateBox2);
 }
 
-update2();
+updateBox2();
