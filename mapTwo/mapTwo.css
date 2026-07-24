@@ -1,11 +1,18 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('./img/mapTwo-Background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 #map2 {
     position: fixed;
     inset: 0;
     display: flex;
     flex-wrap: wrap;
     z-index:1000;
-   
-
 }
 
 .tile {
@@ -13,8 +20,5 @@
     height: calc(100vh / 12);
     display: block;
     z-index:500;
-}
-
-body {
-    background-image: url('blau lila hlen hintergrund.png');
+    box-sizing: border-box;
 }

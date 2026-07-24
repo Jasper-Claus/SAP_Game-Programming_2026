@@ -25,31 +25,36 @@ for (let y = 0; y < map3Data.length; y++) {
         tile.className = "tile";
 
         if (map3Data[y][x] === 2) {
-            tile.style.backgroundImage = "url('map3-earth.png')";
+            tile.classList.add("collider");
+            tile.style.backgroundImage = "url('./img/mapThree-earth.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
-        } 
+        }
         else if (map3Data[y][x] === 1){
-            tile.style.backgroundImage = "url('map3-top.png')";
+            tile.classList.add("collider");
+            tile.style.backgroundImage = "url('./img/mapThree-top.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 3){
-            tile.style.backgroundImage = "url('map3-stone.png')";
+            tile.classList.add("collider");
+            tile.style.backgroundImage = "url('./img/mapThree-stone.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 4){
-            tile.style.backgroundImage = "url('map-box.png')";
+            tile.classList.add("collider");
+            tile.style.backgroundImage = "url('../img/maps/map-box.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
         }
         else if (map3Data[y][x] === 5){
-            tile.style.backgroundImage = "url('map3-spike.png')";
+            tile.classList.add("spike");
+            tile.style.backgroundImage = "url('./img/mapThree-spike.png')";
             tile.style.backgroundSize = "cover";
             tile.style.backgroundRepeat = "no-repeat";
             tile.style.backgroundPosition = "center";
@@ -60,16 +65,19 @@ for (let y = 0; y < map3Data.length; y++) {
 
             const moving = document.createElement("div");
             moving.id = "moving";
-            moving.className = "tile";
+            moving.className = "tile collider";
 
             moving.style.position = "absolute";
+            moving.style.width = `calc(100vw / 24)`;
+            moving.style.height = `calc(100vh / 12)`;
             moving.style.left = `${x * tileWidth}px`;
             moving.style.top = `${y * tileHeight}px`;
 
-            moving.style.backgroundImage = "url('map-box.png')";
+            moving.style.backgroundImage = "url('../img/maps/map-box.png')";
             moving.style.backgroundSize = "cover";
             moving.style.backgroundRepeat = "no-repeat";
             moving.style.backgroundPosition = "center";
+            moving.style.zIndex = "100";
 
             document.body.appendChild(moving);
         }
@@ -79,16 +87,19 @@ for (let y = 0; y < map3Data.length; y++) {
 
             const moving2 = document.createElement("div");
             moving2.id = "moving2";
-            moving2.className = "tile";
+            moving2.className = "tile collider";
 
             moving2.style.position = "absolute";
+            moving2.style.width = `calc(100vw / 24)`;
+            moving2.style.height = `calc(100vh / 12)`;
             moving2.style.left = `${x * tileWidth}px`;
             moving2.style.top = `${y * tileHeight}px`;
 
-            moving2.style.backgroundImage = "url('map-box.png')";
+            moving2.style.backgroundImage = "url('../img/maps/map-box.png')";
             moving2.style.backgroundSize = "cover";
             moving2.style.backgroundRepeat = "no-repeat";
             moving2.style.backgroundPosition = "center";
+            moving2.style.zIndex = "100";
 
             document.body.appendChild(moving2);
         }
@@ -104,50 +115,52 @@ for (let y = 0; y < map3Data.length; y++) {
 
 let richtung = 1; // 1 = rechts, -1 = links
 
-function update() {
+function updateBox() {
 
     const blocks = document.getElementById("moving");
+    if (!blocks) return;
 
     let x = parseInt(blocks.style.left);
 
     x += richtung;
 
-    if (x >= 480) {      
+    if (x >= 480) {
         richtung = -1;
     }
 
-    if (x <= 315) {     
+    if (x <= 315) {
         richtung = 1;
     }
 
     blocks.style.left = x + "px";
 
-    requestAnimationFrame(update);
+    requestAnimationFrame(updateBox);
 }
 
-update();
+updateBox();
 
 let richtung2 = 1; // 1 = rechts, -1 = links
 
-function update2() {
+function updateBox2() {
 
     const blocks = document.getElementById("moving2");
+    if (!blocks) return;
 
     let y = parseInt(blocks.style.top);
 
     y += richtung2;
 
-    if (y >= 400) {      
+    if (y >= 400) {
         richtung2 = -1;
     }
 
-    if (y <= 195) {   
+    if (y <= 195) {
           richtung2 = 1;
     }
 
     blocks.style.top = y + "px";
 
-    requestAnimationFrame(update2);
+    requestAnimationFrame(updateBox2);
 }
 
-update2();
+updateBox2();

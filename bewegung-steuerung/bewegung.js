@@ -43,13 +43,16 @@ const collider = document.querySelectorAll(".collider");
 
 const spieler = document.getElementById("spieler");
 
+// Pfade relativ zur HTML-Datei (Map-Ordner)
+spieler.style.backgroundImage = "url('../img/prinzessinLaufen/laufen_1.png')";
+
 const keys = {};
 
 //let anzMuenzen = 0;
 //let punkte = 0;
 
 let x = 100;
-let y = 20; // Start auf dem Boden (ground1 ist 20px hoch)
+let y = 20; // Start auf dem Boden (#ground1 ist 20px hoch)
 
 let speedY = 0;
 let speedX = 0;
@@ -59,9 +62,35 @@ const gravity = 0.7;
 const jumpPower = 15;
 
 let springt = false;
+let dead = false;
 
 const playerWidth = 50;
 const playerHeight = 80;
+
+// Spieler-Hitbox aus x/y berechnen (zuverlässiger als getBoundingClientRect)
+function getPlayerRect() {
+    return {
+        left: x,
+        right: x + playerWidth,
+        top: window.innerHeight - y - playerHeight,
+        bottom: window.innerHeight - y,
+    };
+}
+
+function overlaps(a, b) {
+    return (
+        a.left < b.right &&
+        a.right > b.left &&
+        a.top < b.bottom &&
+        a.bottom > b.top
+    );
+}
+
+// Steht der Spieler nur leicht auf der Oberseite? Dann keine Seiten-Kollision.
+function isOnTopOf(playerRect, blockRect) {
+    const sink = playerRect.bottom - blockRect.top;
+    return sink >= 0 && sink <= 10 && playerRect.top < blockRect.top;
+}
 
 // Beim Drücken zur Liste hinzufügen um gedrückt zu halten zu erlauben
 document.addEventListener("keydown", (e) => {
@@ -72,6 +101,31 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
     keys[e.code] = false;
 });
+
+let klotz = {
+    left: 100,
+    top:100,
+};
+
+let laufBilder = [
+    "../img/prinzessinLaufen/laufen_1.png",
+    "../img/prinzessinLaufen/laufen_2.png",
+    "../img/prinzessinLaufen/laufen_3.png",
+    "../img/prinzessinLaufen/laufen_4.png",
+    "../img/prinzessinLaufen/laufen_5.png",
+    "../img/prinzessinLaufen/laufen_6.png",
+];
+
+let aktuellesBild = 0;
+let animationCounter = 0;
+
+function animierenLaufen() {
+
+    aktuellesBild = (aktuellesBild + 1) % laufBilder.length;
+
+    spieler.style.backgroundImage =
+        `url(${laufBilder[aktuellesBild]})`;
+}
 
 /*
 // Tastendruck
@@ -95,6 +149,43 @@ document.addEventListener("keydown", function(event){
 // Spielschleife
 function update(){
 
+    if (dead) return;
+
+    // Sprunganimation vorbereitet, später aktivieren
+    if (false) {
+
+    if (speedY > 0) {
+        // Nach oben
+        spieler.style.backgroundImage =
+            "url('../img/prinzessinSpringen/springen_1.png')";
+    } else {
+        // Nach unten
+        spieler.style.backgroundImage =
+            "url('../img/prinzessinSpringen/springen_4.png')";
+    }
+
+    } else if (Math.abs(speedX) > 0.5) {
+
+        animationCounter++;
+
+        if (animationCounter >= 8) {
+            animierenLaufen();
+            animationCounter = 0;
+        }
+
+    } else {
+
+        spieler.style.backgroundImage =
+            `url(${laufBilder[0]})`;
+    }
+
+    if (keys["KeyA"]) {
+        spieler.style.transform = "scaleX(-1)";
+    }
+
+    if (keys["KeyD"]) {
+        spieler.style.transform = "scaleX(1)";
+    }
     //Kontrolle welche gedrückt werden und darauf basierend dann bewegung oder aktionen ausführen
     //Links
     if (keys["KeyA"]) {
@@ -135,127 +226,128 @@ function update(){
         speedX = -10;
     }
 
-    // 1) Zuerst nur LINKS / RECHTS bewegen
-
-    // Aktuelle Position auf den Bildschirm schreiben
-    spieler.style.left = x + "px";
-    spieler.style.bottom = y + "px";
-
-    // War der Spieler SCHON vor dem Seitwärts-Schritt in einem Block?
-    // (z.B. leicht im Boden wegen Schwerkraft)
-    // Wenn ja -> das ist KEINE Wand von der Seite
-    const schonDrin = checkCollision();
-
-    // Jetzt erst seitlich bewegen
+    // --- X-Achse: erst bewegen, dann Kollision auflösen ---
     x += speedX;
 
     // Verhindern des verlassen des browser fensters
-    //Rechts
     if ((x + playerWidth) > window.innerWidth) {
         x = window.innerWidth - playerWidth;
     }
-    //Links
     if (x < 0) {
         x = 0;
     }
 
-    // Neue X-Position anzeigen
-    spieler.style.left = x + "px";
+    // Seiten-Kollisionen (Boden-Kontakt zählt nicht als Wand)
+    for (const block of collider) {
+        const blockRect = block.getBoundingClientRect();
+        const playerRect = getPlayerRect();
 
-    // Checken wir nach kollisionen
-    let hit = checkCollision();
-
-    // Debug wird nicht logisch gebraucht, nur fürs menschliche auge
-    if (hit) {
-        console.log("Kollision mit:", hit);
-    }
-
-    // Seiten-Kollision:
-    // Nur wenn wir VORHER noch nicht im Block waren (!schonDrin)
-    // und uns jetzt durch Laufen reingeschoben haben
-    if (hit && !schonDrin && speedX !== 0) {
-        const blockRect = hit.getBoundingClientRect();
+        if (!overlaps(playerRect, blockRect)) continue;
+        if (isOnTopOf(playerRect, blockRect)) continue;
 
         if (speedX > 0) {
-            // Von links gegen den Block gelaufen -> links vom Block hinstellen
             x = blockRect.left - playerWidth;
-        } else {
-            // Von rechts gegen den Block gelaufen -> rechts vom Block hinstellen
+        } else if (speedX < 0) {
             x = blockRect.right;
         }
 
         speedX = 0;
-        spieler.style.left = x + "px";
     }
 
-    // 2) Danach nur HOCH / RUNTER bewegen
-    // Schwerkraft wirkt immer (ziehen nach unten)
+    // --- Y-Achse: Schwerkraft, dann Boden/Decke auflösen ---
     speedY -= gravity;
     y += speedY;
 
-    // Nicht unter den Bildschirm fallen
     if (y < 0) {
         y = 0;
         speedY = 0;
         springt = false;
     }
 
-    // Neue Y-Position anzeigen
-    spieler.style.bottom = y + "px";
+    let onGround = false;
 
-    // Nochmal Kollision prüfen (jetzt für Boden / Decke)
-    hit = checkCollision();
+    for (const block of collider) {
+        const blockRect = block.getBoundingClientRect();
+        const playerRect = getPlayerRect();
 
-    if (hit) {
-        const blockRect = hit.getBoundingClientRect();
+        if (!overlaps(playerRect, blockRect)) continue;
 
         if (speedY <= 0) {
-            // Fallen / stehen -> auf dem Block landen
+            // Landen
             y = window.innerHeight - blockRect.top;
             speedY = 0;
             springt = false;
+            onGround = true;
         } else {
-            // Springen nach oben -> mit dem Kopf gegen den Block stoßen
+            // Kopf stoßen
             y = window.innerHeight - blockRect.bottom - playerHeight;
             speedY = 0;
         }
-
-        spieler.style.bottom = y + "px";
     }
 
-    // Von einer Kante gelaufen -> Schwerkraft / Fallen wieder an
-    if (!hit && y > 0 && !springt) {
-        springt = true; // Aktiviert die Schwerkraft wieder fürs Herunterfallen
+    // Von einer Kante gelaufen -> fällt
+    if (!onGround && y > 0) {
+        springt = true;
     }
+
+    spieler.style.left = x + "px";
+    spieler.style.bottom = y + "px";
+
+    checkKollision();
+    checkKollisionKobold();
+    checkPortal();
 
     requestAnimationFrame(update);
-
 }
 
-function checkCollision() {
-    // Holt die Position und größe vom Spieler
-    const spielerRect = spieler.getBoundingClientRect();
+function checkKollision() {
+    if (dead) return;
 
-    // Liest alle Collider Klassen aus und gibt sie anstelle von einer Liste in einzelnden Objekten wieder
-    for (const block of collider) {
-        // Holt die Postition von einem Collider aus der Liste
-        const blockRect = block.getBoundingClientRect();
+    const playerRect = getPlayerRect();
+    const spikes = document.querySelectorAll(".spike");
 
-        // Checkt ob die sich berühren und wenn dass passiert dann gibt es den collider als objekt zurück,
-        // um in später zu nutzen
-        if (
-            spielerRect.left < blockRect.right &&
-            spielerRect.right > blockRect.left &&
-            spielerRect.top < blockRect.bottom &&
-            spielerRect.bottom > blockRect.top
-        ) {
-            return block; // Gibt den Collider zurück
+    for (const spike of spikes) {
+        const spikeRect = spike.getBoundingClientRect();
+
+        if (overlaps(playerRect, spikeRect)) {
+            dead = true;
+            spieler.style.backgroundColor = "black";
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+            return;
         }
     }
+}
 
-    // Wenn keine Berührung stattfindet, gibt die Funktion auch nichts zurück
+function checkKollisionKobold() {
+    const kobold = document.getElementById("kobold");
+    if (!kobold || dead) return;
 
-    return null; // Keine Kollision
+    const playerRect = getPlayerRect();
+    const koboldRect = kobold.getBoundingClientRect();
+
+    if (overlaps(playerRect, koboldRect)) {
+        dead = true;
+        spieler.style.backgroundColor = "black";
+        setTimeout(function () {
+            location.reload();
+        }, 1000);
+    }
+}
+
+function checkPortal() {
+    if (dead) return;
+
+    const portal = document.getElementById("portal");
+    if (!portal) return;
+
+    const playerRect = getPlayerRect();
+    const portalRect = portal.getBoundingClientRect();
+
+    if (overlaps(playerRect, portalRect)) {
+        location.href = portal.dataset.ziel;
+    }
 }
 
 update();
