@@ -1,24 +1,44 @@
 #spieler{
     width: 100px;
     height: 100px;
-    background-color: rgb(195, 31, 149);
     position: absolute;
     top: 100px;
     left: 100px;
 }
-#ziel{
+#spieler img {
+    width: 200%;
+    height: 200%;
+}
+#kobold{
     width: 100px;
     height: 100px;
-    background-color: rgb(86, 195, 31);
     position: absolute;
     top: 400px;
     left: 300px; 
+}
+#kobold img {
+    width: 150%;
+    height: 150%;
 }
 #muenze {
     position: absolute;
     top: 600px;
     left: 900px;
-    background-color: gold;
+    width: 75px;
+    height: 75px;
+}
+#muenze img {
+    width: 100%;
+    height: 100%;
+}
+#pokal {
+    position: absolute;
+    top: 600px;
+    left:1200px;
     width: 100px;
     height: 100px;
+}
+#pokal img {
+    width: 90%;
+    height: 90%;
 }
