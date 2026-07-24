@@ -39,3 +39,7 @@ body {
     display: block;
     z-index:500;
 }
+
+body {
+    background-image: url('map1-hintergrund.png');
+}

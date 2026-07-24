@@ -14,3 +14,7 @@
     display: block;
     z-index:500;
 }
+
+body {
+    background-image: url('blau lila hlen hintergrund.png');
+}
